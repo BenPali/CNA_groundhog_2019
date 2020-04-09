@@ -140,6 +140,7 @@ def calc_weirdest_value(list_temperature, list_std, periode):
     # Une boucle en prenant que les premiers élement de la tuple
     five_weirdest_value = [i[0] for i in five_weirdest_value]
     # Le résulat obtenue est différent du sujet du fait qu'on utilise pas les même algorithme
+
     print("{} weirdest values are [".format(nb_weirdest_value), end='')
     i = nb_weirdest_value - 1
     while (i >= 0):
