@@ -18,23 +18,12 @@ def error_gestion():
     if ((len(sys.argv) == 2 and sys.argv[1].isdigit() == False) or int(sys.argv[1]) == 0):
         raise ValueError("Error: input must be a positive number")
 
-def is_integer(n):
-    try:
-        float(n)
-    except ValueError:
-        return False
-    return (float(n))
-
 def get_input_value(command):
-    # temperature = is_integer(command)
-    # print("command = ", command)
     try :
         temperature = float(command)
     except (ValueError):
+        print ("Error : Please give a temperature or a good command")
         return (sys.exit(84))
-    # print("temperature = ", command)
-    # if (temperature == False):
-    #     print ("Error : Please give a temperature or a good command")
     return (temperature)
 
 def get_command():
@@ -83,13 +72,10 @@ def calc_standard_deviation(list_temperature, periode):
 def calc_relative_temperature_evolution(list_temperature, periode, va):
     pos = len(list_temperature) - (periode + 1)
     vd = list_temperature[pos]
-    # print("va = ", va)
-    # print("vd = ", vd)
     try :
         res = ((va - vd) / vd) * 100
     except (ValueError, ZeroDivisionError):
         res = 999.99
-    # print("res relative = ", res)
     return (res)
 
 def calculate_last_rte(list_temperature, periode):
@@ -138,6 +124,8 @@ def calc_output_from_list(list_temperature, list_std, periode, new_temperature, 
 
 def calc_weirdest_value(list_temperature, list_std, periode):
     weirdest_value_list = list()
+    if (len(list_temperature) < 2):
+        raise ValueError("Error : cannot calculate weirdest value, not enought temperature")
     for i in range(1, len(list_temperature) - 1, 1):
         expected_value = (list_temperature[i - 1] + list_temperature[i + 1]) / 2
         difference = abs(expected_value - list_temperature[i])
@@ -145,12 +133,15 @@ def calc_weirdest_value(list_temperature, list_std, periode):
     # Tri en prenant les 2ème valeur de la list de tuple
     weirdest_value_list.sort(key=lambda tup: tup[1])
     # Prendre seulement les 5 derniers tuples de la list
-    five_weirdest_value = weirdest_value_list[-5:]
+    nb_weirdest_value = 5
+    if (len(weirdest_value_list) < 5):
+        nb_weirdest_value = len(weirdest_value_list)
+    five_weirdest_value = weirdest_value_list[-nb_weirdest_value:]
     # Une boucle en prenant que les premiers élement de la tuple
     five_weirdest_value = [i[0] for i in five_weirdest_value]
     # Le résulat obtenue est différent du sujet du fait qu'on utilise pas les même algorithme
-    print("5 weirdest values are [", end='')
-    i = 4
+    print("{} weirdest values are [".format(nb_weirdest_value), end='')
+    i = nb_weirdest_value - 1
     while (i >= 0):
         if (i != 0):
             print("{}".format(five_weirdest_value[i]), end=', ')
